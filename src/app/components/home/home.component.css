@@ -1,0 +1,21 @@
+*{
+  margin:0;
+  padding:0;
+}
+h3{
+  margin:10px 0;
+}
+ul{
+  text-align:center;
+  width:100%;
+  overflow:hidden;
+}
+li{
+  width:33%;
+  float:left;
+  height:150px;
+}
+.imgpic{
+  width:100px;
+  height:100px;
+}

@@ -1,0 +1,12 @@
+<div>
+ <div *ngFor="let item of list">
+    <h3>{{item.title}}</h3>
+   <ul>
+     <li *ngFor="let l of item.list" (click)="goTodetail(l._id)">
+       <img [src]="domain+l.img_url" class="imgpic"/>
+       <p>{{l.title}}</p>
+       <p>￥{{l.price}}</p>
+     </li>
+   </ul>
+ </div>
+</div>

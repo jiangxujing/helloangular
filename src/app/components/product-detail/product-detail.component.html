@@ -1,0 +1,24 @@
+<div>
+	<div *ngFor="let item of list" class="main-content">
+    <img [src]="domain+item.img_url" class="img_url"/>
+    <p>{{item.catename}}</p>
+    <p>{{item.price}}份</p>
+    <div>
+      <p>商品详情</p>
+      <div [innerHTML]='item.content'></div>
+      <p>商品描述</p>
+      {{item.description}}
+    </div>
+
+   </div>
+    <footer class="pfooter" style="width:100%;height:50px;background:#fff;">
+      <div style="float:left;">
+        数量：<span>-</span>
+        <input type="text" value="1"/>
+        <span>+</span>
+      </div>
+      <div style="float:right">
+        <button style="background:red;color:#fff;outline:none">加入购物车测</button>
+      </div>
+    </footer>
+</div>

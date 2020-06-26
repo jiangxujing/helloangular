@@ -4,10 +4,95 @@
   <meta charset="utf-8">
   <title>HelloAngular</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
   <app-root></app-root>
 </body>
+<!-- 新增模块,创建了一个user模块
+  1、ng g module module/user //表示新增了一个module文件夹，里面有个user模块
+  2、 ng g component module/user/components/profile //表示在user模块下新增了一个文件夹为components，里面有一个profile组件
+    同理ng g component module/user/components/address
+    3、ng g component module/user //在module/user文件夹下创建一个user组件，这就类似于app根组件了
+    4、ng g service module/user/services/common //在module/user/services下面创建一个服务
+    上面是如何创建一个完整的user模块 user.component.html就是跟组件
+
+    下面是如何使用这个模块
+    5、app.module.ts里面需要//引入自定义模块
+              import { UserModule } from './module/user/user.module'
+              然后 imports: [UserModule //挂载],
+     5、需要在app.component.html文件里面挂在的组件需要在user.module.ts模块里面  导出 exports:[UserComponent,OrderComponent]
+      这样就可以里面<app-user></app-user>
+                  <app-order></app-order>这样使用了
+ -->
+
+ <!--模块懒加载，首先创建三个模块，创建带路由的模块
+    ng g module module/users --routing //创建带路由的模块
+    ng g component module/users //在module/users下面创建根组件
+    ng g component module/acticle //在module/acticle下面创建根组件
+    ng g component module/product //在module/product下面创建根组件
+
+    //在每一个模块中对应的route文件里面配置这个
+	users-routing.module配置
+    import { UsersComponent } from './users.component'
+    const routes: Routes = [
+      {path:'',component:UsersComponent}
+    ];
+	product-routing.module配置
+	import { ProductComponent } from './product.component'
+	const routes: Routes = [
+	  {path:'',component:ProductComponent}
+	];
+	acticle-routing.module配置
+	import { ActicleComponent } from './acticle.component'
+	const routes: Routes = [
+	  {path:'',component:ActicleComponent}
+	];
+    //然后在app-routing.module.ts配置路由
+    const routes:Routes = [
+        {path:'users',loadChildren:()=>import('./module/users/users.module').then(mod=>mod.UsersModule)},
+        {path:'acticle',loadChildren:()=>import('./module/acticle/acticle.module').then(mod=>mod.ActicleModule)},
+        {path:'product',loadChildren:()=>import('./module/product/product.module').then(mod=>mod.ProductModule)},
+        {path:'**',redirectTo:'users'}]
+      最后在app.component.html使用
+         <a [routerLink]="['/users']">用户模块</a>&nbsp;&nbsp;&nbsp;
+        <a [routerLink]="['/acticle']">文章模块</a>&nbsp;&nbsp;&nbsp;
+        <a [routerLink]="['/product']">商品模块</a> 这样点击的时候就可以匹配到当前模块的跟组件了
+        当当前模块里面还包含其他组件时，比如module/users/components/下面还有address和profile两个组件，此时如果想匹配到这两个组件的路由就需要在users-routing.module.ts
+        里面加这些
+        import { ProfileComponent } from './components/profile/profile.component';
+        import { AddressComponent } from './components/address/address.component';
+        const routes: Routes = [
+            {
+              path:'',component:UsersComponent //这是匹配模块是需要加的 http://localhost:4200/users
+            },{
+              path:'profile',component:ProfileComponent //这是匹配了模块下面的http://localhost:4200/users/profile需要加的
+          },{
+             path:'address',component:AddressComponent//这是匹配了模块下面的http://localhost:4200/users/address需要加的
+          }
+        ];
+        再比如如果module/product/components/下面有plist,pcontent,cart三个组件
+        想要匹配到下面的路由，要作为父子路由的那种就可以这样做
+        在文件：product-routing.module.ts中
+        import { PlistComponent } from './components/plist/plist.component';
+        import { CartComponent } from './components/cart/cart.component';
+        import { PcontentComponent } from './components/pcontent/pcontent.component';
+        const routes: Routes = [
+          {
+            path:'',component:ProductComponent,
+            //父子路由就需要children上场了
+            children:[
+              {
+                path:'cart',component:CartComponent
+              },{
+                 path:'plist',component:PlistComponent
+              }
+            ]
+          },{
+                path:'pcontent',component:PcontentComponent
+              }
+
+        ];
+ -->
 </html>
